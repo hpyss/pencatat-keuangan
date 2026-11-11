@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Upload, Trash2, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { X, Upload, Trash2, ArrowUpRight, ArrowDownLeft, ChevronDown } from 'lucide-react';
 import { Transaction, TransactionType, PaymentMethod, Category } from '@/types/finance';
 import { PAYMENT_METHODS } from '@/lib/constants';
 import { formatNumber, getTodayDateString } from '@/lib/utils';
@@ -207,31 +207,32 @@ export function TransactionModal({
             </div>
           </div>
 
-          {/* Kategori Selector (Compact Dropdown with Badge Preview) */}
+          {/* Kategori Selector (Side-by-side with icon badge, 100% iOS safe) */}
           <div>
             <label className="block text-[11px] font-semibold text-[#64748B] mb-1">
               Kategori
             </label>
-            <div className="relative flex items-center">
-              <div className="absolute left-2.5 pointer-events-none flex items-center gap-1.5">
-                <div
-                  className="w-5 h-5 rounded flex items-center justify-center text-white"
-                  style={{ backgroundColor: selectedCatObj?.color || '#0F172A' }}
-                >
-                  <CategoryIcon name={selectedCatObj?.icon || 'Tag'} size={11} className="text-white" />
-                </div>
-              </div>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 bg-white border border-[#CBD5E1] rounded-lg text-xs font-semibold text-[#1E293B] focus:outline-hidden focus:border-[#0F172A]"
+            <div className="flex items-center gap-2">
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-white shrink-0 shadow-2xs"
+                style={{ backgroundColor: selectedCatObj?.color || '#0F172A' }}
               >
-                {filteredCategories.map((cat) => (
-                  <option key={cat.id} value={cat.name}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+                <CategoryIcon name={selectedCatObj?.icon || 'Tag'} size={14} className="text-white" />
+              </div>
+              <div className="relative flex-1 min-w-0">
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full pl-3 pr-8 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs font-semibold text-[#1E293B] focus:outline-hidden focus:border-[#0F172A] appearance-none"
+                >
+                  {filteredCategories.map((cat) => (
+                    <option key={cat.id} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#64748B] pointer-events-none" />
+              </div>
             </div>
           </div>
 
@@ -246,7 +247,7 @@ export function TransactionModal({
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-white border border-[#CBD5E1] rounded-lg text-xs text-[#1E293B] focus:outline-hidden focus:border-[#0F172A]"
+                  className="w-full px-2.5 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs text-[#1E293B] focus:outline-hidden focus:border-[#0F172A]"
                 />
               </div>
             </div>
@@ -255,17 +256,20 @@ export function TransactionModal({
               <label className="block text-[11px] font-semibold text-[#64748B] mb-1">
                 Metode Pembayaran
               </label>
-              <select
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-                className="w-full px-2.5 py-1.5 bg-white border border-[#CBD5E1] rounded-lg text-xs text-[#1E293B] focus:outline-hidden focus:border-[#0F172A]"
-              >
-                {PAYMENT_METHODS.map((method) => (
-                  <option key={method} value={method}>
-                    {method}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
+                  className="w-full pl-2.5 pr-7 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs text-[#1E293B] focus:outline-hidden focus:border-[#0F172A] appearance-none"
+                >
+                  {PAYMENT_METHODS.map((method) => (
+                    <option key={method} value={method}>
+                      {method}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#64748B] pointer-events-none" />
+              </div>
             </div>
           </div>
 
@@ -279,7 +283,7 @@ export function TransactionModal({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Contoh: Makan siang nasi padang"
-              className="w-full px-3 py-1.5 bg-white border border-[#CBD5E1] rounded-lg text-xs text-[#1E293B] focus:outline-hidden focus:border-[#0F172A]"
+              className="w-full px-3 py-2 bg-white border border-[#CBD5E1] rounded-lg text-xs text-[#1E293B] focus:outline-hidden focus:border-[#0F172A]"
             />
           </div>
 
@@ -336,13 +340,13 @@ export function TransactionModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-3.5 py-1.5 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-[#F1F5F9] hover:bg-[#E2E8F0] rounded-lg transition-colors"
+              className="px-3.5 py-2 text-xs font-semibold text-[#64748B] hover:text-[#0F172A] bg-[#F1F5F9] hover:bg-[#E2E8F0] rounded-lg transition-colors"
             >
               Batal
             </button>
             <button
               type="submit"
-              className={`px-4 py-1.5 text-xs font-bold text-white rounded-lg shadow-2xs transition-colors ${
+              className={`px-4 py-2 text-xs font-bold text-white rounded-lg shadow-2xs transition-colors ${
                 type === 'income'
                   ? 'bg-[#10B981] hover:bg-emerald-600'
                   : 'bg-[#EF4444] hover:bg-red-600'
